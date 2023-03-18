@@ -7,7 +7,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="nav-links">
                 <div class="navbar-nav">
                     <a class="nav-link" aria-current="page" href="../common/home.jsp">Home</a>
-                    <a class="nav-link" href="#blogs">Blogs</a>
+                    <!-- <a class="nav-link" href="../common/blog.jsp">Blogs</a> -->
                 <c:if test="${currentAccount == null}">
                     <a href="../auth/login.jsp" class="btn btn-primary rounded-4 mx-1">Login <i class="fa-solid fa-right-to-bracket"></i></a>
                     <a href="../auth/register.jsp" class="btn btn-primary rounded-4 mx-1">Register <i class="fa-solid fa-user-plus"></i></a>

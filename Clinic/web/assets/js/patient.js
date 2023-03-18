@@ -64,9 +64,8 @@ function loadData(type) {
             break;
             case 'examinations':
         {
-            $('examinations tbody#accordion').empty();
             
-            var aEdit = $('<a class="edit" data-bs-toggle="modal" data-bs-target="#form-edit" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+            var aView = $('<a class="view" data-bs-toggle="modal" data-bs-target="#form-view" href=""><i class="fa-solid fa-eye text-primary me-3"></i></a>');
 
              $('#examinations > tbody').empty();
 
@@ -74,20 +73,42 @@ function loadData(type) {
 
                  $.each(data, function (i, val) {
                      const row = $('<tr>').append($('<th scope="row">').text(i + 1))
-                     .append($('<td>').text(val.patientName))
+                     .append($('<td>').text(val.doctorName))
                      .append($('<td>').text(val.serviceName))
                      .append($('<td>').text(val.createdDate))
                      .append($('<td>').html((val.status == 1 ? 'Paid<i class="fa-solid fa-circle-check text-success ms-2"></i>' : 'Not paid<i class="fa-solid fa-circle-pause text-danger ms-2"></i>')))
                      .append($('<td class="action">'));
                      
                      row.find('td.action')
-                     .append(aEdit.clone().attr({'href': '../../loadData?examinationID=' + val.examinationID}));
+                     .append(aView.clone().attr({'href': '../../loadData?examinationID=' + val.examinationID}));
                      
                      $('#examinations > tbody').append(row);
                     });
                 })
         }
         break;
+        case 'prescriptions':
+            {
+                var aView = $('<a class="view" data-bs-toggle="modal" data-bs-target="#form-view" href=""><i class="fa-solid fa-eye text-primary me-3"></i></a>');
+
+                $('#prescriptions > tbody').empty();
+
+                $.post('../../loadData?type=prescriptions', function (data) {
+                    $.each(data, function (i, val) {
+                        const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                                .append($('<td>').text(val.doctorName))
+                                .append($('<td>').text(val.medicineName))
+                                .append($('<td>').text(val.createdDate))
+                                .append($('<td class="action">'));
+
+                        row.find('td.action')
+                                .append(aView.clone().attr({'href': '../../loadData?prescriptionID=' + val.prescriptionID}));
+
+                        $('#prescriptions > tbody').append(row);
+                    });
+                })
+            }
+            break;
         default:
             break;
     }
@@ -227,6 +248,29 @@ function editAppointment() {
     })
 
 }
+
+// View examination
+function viewExamination() {
+    $(document).on('click', 'a.view', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#view input#result').attr('value', data.result);
+        });
+    });
+}
+
+// View prescripiton
+function viewPrescription(){
+    // Load data to form view
+    $(document).on('click', 'a.view', function (e) {
+        e.preventDefault();
+
+        $.post($(this).attr('href'), function (data) {
+            $('#view textarea#instruction').val(data.instruction);
+        });
+}
+)};
 
 // Reset form after hidden
 function resetForm() {

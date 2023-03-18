@@ -50,7 +50,7 @@ public class PrescriptionDAO extends DBContext {
         List<Prescription> prescriptions = new ArrayList<>();
 
         try {
-            String sql = "select p.*, a1.name as patientName, a2.name as doctorName, m.name as medicineName "
+            String sql = "select p.*, a1.accountName as patientName, a2.accountName as doctorName, m.medicineName "
                     + "from prescriptions as p "
                     + "join accounts as a1 on p.patientID = a1.accountID "
                     + "join accounts as a2 on p.doctorID = a2.accountID "
@@ -75,6 +75,7 @@ public class PrescriptionDAO extends DBContext {
                 ));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("Error in PrescriptionDAO.getPrescriptionsForPat()");
         }
 

@@ -46,3 +46,17 @@
     </div>
 </div>
 <!-- End form edit examination-->
+
+<script>
+    $(document).ready(function(){
+        loadData('examinations');
+        viewExamination();
+
+        $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#examinations tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    })
+</script>

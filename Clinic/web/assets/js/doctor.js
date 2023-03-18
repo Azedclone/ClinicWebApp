@@ -200,7 +200,7 @@ function editExamination() {
             $('#edit input#examinationID').attr('value', data.examinationID);
             $('#edit input#patientName').attr('value', data.patientName);
             $('#edit input#serviceName').attr('value', data.serviceName);
-            $('#edit textarea#result').attr('value', data.result);
+            $('#edit textarea#result').val(data.result);
             $('#edit input[name="status"][value="' + data.status + '"]').prop('checked', true);
         });
 

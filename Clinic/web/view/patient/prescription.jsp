@@ -35,7 +35,7 @@
                 <form id="view">
                     <div class="mb-3">
                         <label for="instruction" class="form-label">Instruction</label>
-                        <input type="text" class="form-control" id="instruction" name="instruction" readonly>
+                        <textarea rows="6" class="form-control" id="instruction" name="instruction" readonly></textarea>
                     </div>
                 </form>
             </div>
@@ -46,3 +46,17 @@
     </div>
 </div>
 <!-- End form view Prescription-->
+
+<script>
+    $(function() {
+        loadData("prescriptions");
+        viewPrescription();
+
+        $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#prescriptions tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
