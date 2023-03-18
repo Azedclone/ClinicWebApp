@@ -40,6 +40,10 @@
         <servlet-name>ManageExamination</servlet-name>
         <servlet-class>controller.ManageExamination</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManagePrescription</servlet-name>
+        <servlet-class>controller.ManagePrescription</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Authentication</servlet-name>
         <url-pattern>/auth</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>ManageExamination</servlet-name>
         <url-pattern>/manageExamination</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagePrescription</servlet-name>
+        <url-pattern>/managePrescription</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

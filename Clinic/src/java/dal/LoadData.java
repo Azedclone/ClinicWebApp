@@ -109,6 +109,40 @@ public class LoadData extends HttpServlet {
                     }
                 }
                 break;
+                case "examinations": {
+                    ExaminationDAO examinationDAO = new ExaminationDAO();
+                    HttpSession session = request.getSession();
+                    Account currentAccount = (Account) session.getAttribute("currentAccount");
+                    if (currentAccount.getAccountRole() == 2) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForPat(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    } else if (currentAccount.getAccountRole() == 1) {
+                        List<Examination> examinations = examinationDAO.getExaminationsForDoc(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(examinations));
+                    }
+                }
+                break;
+                case "prescriptions": {
+                    PrescriptionDAO prescriptionDAO = new PrescriptionDAO();
+                    HttpSession session = request.getSession();
+                    Account currentAccount = (Account) session.getAttribute("currentAccount");
+                    if (currentAccount.getAccountRole() == 2) {
+                        List<Prescription> prescriptions = prescriptionDAO.getPrescriptionsForPat(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(prescriptions));
+                    } else if (currentAccount.getAccountRole() == 1) {
+                        List<Prescription> prescriptions = prescriptionDAO.getPrescriptionsForDoc(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(prescriptions));
+                    }
+                }
+                break;
                 default:
                     break;
             }
@@ -170,6 +204,31 @@ public class LoadData extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(appointmentJson);
+        }
+
+        String examinationID = request.getParameter("examinationID");
+        if (examinationID != null) {
+            ExaminationDAO examinationDAO = new ExaminationDAO();
+            Examination examination = examinationDAO.getExamination(Integer.parseInt(examinationID));
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.setDateFormat("yyyy-MM-dd");
+            String examinationJson = gsonBuilder.create().toJson(examination);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(examinationJson);
+            response.getWriter().close();
+        }
+
+        String prescriptionID = request.getParameter("prescriptionID");
+        if (prescriptionID != null) {
+            PrescriptionDAO prescriptionDAO = new PrescriptionDAO();
+            Prescription prescription = prescriptionDAO.getPrescription(Integer.parseInt(prescriptionID));
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.setDateFormat("yyyy-MM-dd");
+            String prescriptionJson = gsonBuilder.create().toJson(prescription);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(prescriptionJson);
         }
     }
 
