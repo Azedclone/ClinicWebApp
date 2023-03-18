@@ -93,14 +93,13 @@ public class ServiceDAO extends DBContext {
     //Update service
     public boolean updateService(int serviceID, String serviceName, double price, int status) {
         try {
-            String sql = "update services set serviceName = ?, price = ?, status = ? where serviceID = ?";
+            String sql = "update swp.services set serviceName = ?, price = ?, status = ? where serviceID = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, serviceName);
             st.setDouble(2, price);
             st.setInt(3, status);
             st.setInt(4, serviceID);
             st.execute();
-
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

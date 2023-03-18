@@ -29,10 +29,9 @@ public class ManageService extends HttpServlet {
             if (serviceDAO.isExist(serviceName)) {
                 return "exist";
             }
-
-            if (serviceDAO.updateService(serviceID, serviceName, price, status)) {
-                return "success";
-            }
+        }
+        if (serviceDAO.updateService(serviceID, serviceName, price, status)) {
+            return "success";
         }
 
         return "error";

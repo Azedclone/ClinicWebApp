@@ -4,7 +4,7 @@
     --color-default: #2a8bec;
     --color-second: #539ee9;
     --color-white: #fff;
-    --color-body: #e4e9f7;
+    --color-body: #f6f8fd;
     --color-light: #e0e0e0;
     --color-gray: #999;
 }
@@ -322,4 +322,11 @@ section .container.list{
 
 label.error {
     color:tomato;
+}
+
+.profile-body .profile-avatar img {
+    height: 120px;
+    width: 120px;
+    object-fit: cover;
+    border-radius: 50%;
 }

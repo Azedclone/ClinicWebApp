@@ -3,12 +3,12 @@ package controller;
 import config.MailConfig;
 import dal.AccountDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
 import model.Account;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -108,6 +108,28 @@ public class Authentication extends HttpServlet {
                             System.out.println("Error when send email!");
                         }
                     }
+                }
+                response.getWriter().close();
+            }
+            break;
+            case "edit": {
+                AccountDAO accountDAO = new AccountDAO();
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String email = request.getParameter("email");
+                String accountName = request.getParameter("accountName");
+                String phone = request.getParameter("phone");
+                String gender = request.getParameter("gender");
+                String address = request.getParameter("address");
+                String dob = request.getParameter("dob");
+                
+                if (password == null) {
+                    accountDAO.updateAccount(username, accountName, email, phone, Integer.parseInt(gender), address, Date.valueOf(dob));
+                    response.getWriter().write("success");
+                } else {
+                    accountDAO.changePassword(username, password);
+                    accountDAO.updateAccount(username, accountName, email, phone, Integer.parseInt(gender), address, Date.valueOf(dob));
+                    response.getWriter().write("success");
                 }
                 response.getWriter().close();
             }

@@ -26,11 +26,11 @@
                 <form id="register">
                     <div class="mb-3 px-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username..." required pattern="^(?=[a-zA-Z]+)\w{2,20}$">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username..." required>
                     </div>
                     <div class="mb-3 px-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password..." required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,50}$">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password..." required>
                     </div>
                     <div class="mb-3 px-3">
                         <label for="cfPassword" class="form-label">Confirm Password</label>

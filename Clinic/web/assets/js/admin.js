@@ -26,6 +26,20 @@ $('#sidebar li>a').click(function () {
     });
 });
 
+function logout(e) {
+    e.preventDefault();
+    $.post('../../auth?type=logout');
+    Swal.fire({
+        icon: 'success',
+        text: 'Logout successfully!',
+        showConfirmButton: false,
+        timer: 800
+    });
+    setTimeout(function () {
+        window.location.href = "../common/home.jsp";
+    }, 1000);
+}
+
 // Load data from database using AJAX
 function loadData(type) {
     switch (type) {
@@ -153,6 +167,27 @@ function loadData(type) {
                                 .append(aEdit.clone().attr({'href': '../../loadData?serviceID=' + val.serviceID}))
     
                         $('#services > tbody').append(row);
+                    })
+    
+                })
+            }
+            break;
+            case 'medicines': {
+                $.post('../../loadData?type=medicines', function (data) {
+                    var aEdit = $('<a class="edit" data-bs-toggle="modal" data-bs-target="#form-edit" href=""><i class="fa-solid fa-pen text-dark me-3"></i></a>');
+    
+                    $('#medicines > tbody').empty();
+    
+                    $.each(data, function (i, val) {
+                        const row = $('<tr>').append($('<th scope="row">').text(i + 1))
+                                .append($('<td>').text(val.medicineName))
+                                .append($('<td>').text(val.brand))
+                                .append($('<td class="action">'));
+    
+                        row.find('td.action')
+                                .append(aEdit.clone().attr({'href': '../../loadData?medicineID=' + val.medicineID}))
+    
+                        $('#medicines > tbody').append(row);
                     })
     
                 })
@@ -459,7 +494,6 @@ function editBlog() {
     });
 
     // Send data to server
-    // Send data to server
     $('#edit').submit(function (e) {
         e.preventDefault();
         var formData = new FormData($('#edit')[0]);
@@ -603,10 +637,205 @@ function createService() {
     })
 }
 
+// Edit service
+function editService() {
+    // Fill exist data to form
+    $(document).on('click', 'a.edit', function (e) {
+        $.post($(this).attr('href'), function (data) {
+            $('#edit input#serviceID').attr('value', data.serviceID);
+            $('#edit input#nameLabel').attr('value', data.serviceName);
+            $('#edit input#priceLabel').attr('value', data.price);
+            $('#edit input[name="status"][value="' + data.status + '"]').prop('checked', true);
+        })
+    });
+
+    // Validate data
+    $('#edit').validate({
+        rules : {
+            serviceName: {letterswithbasicpunc:true},
+            price:{range:[1000, 10000]}
+        }
+    });
+    $('#edit input').on('keyup blur', function () {
+        if ($('#edit').valid()) {
+            $('#edit > button').prop('disabled', false);
+        } else {
+            $('#edit > button').prop('disabled', true);
+        }
+    });
+
+    // Send data to server
+    $('#edit').submit(function (e) {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmation',
+            text: 'Are you sure to edit this service?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.post('../../manageService?type=edit', $('#edit').serialize(), function (data) {
+                    if (data === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Edit service successfully!',
+                            timer: 800
+                        });
+                        setTimeout(function () {
+                            loadData('services');
+                            $('#edit')[0].reset();
+                            $('#form-edit').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 800)
+                    } else if (data === "exist") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Service existed!'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Error in server side'
+                        });
+                    }
+                })
+            }
+        })
+    })
+}
+
+// Create medicine
+function createMedicine() {
+    // Validate data
+    $('#create').validate({
+        rules : {
+            serviceName: {letterswithbasicpunc:true},
+            brand: {lettersonly: true}
+        }
+    });
+    $('#create input').on('keyup blur', function () {
+        if ($('#create').valid()) {
+            $('#create > button').prop('disabled', false);
+        } else {
+            $('#create > button').prop('disabled', true);
+        }
+    });
+
+    // Send data to server
+    $('#create').submit(function (e) {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmation',
+            text: 'Are you sure to create this medicine?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.post('../../manageMedicine?type=create', $('#create').serialize(), function (data) {
+                    if (data === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Create medicine successfully!',
+                            timer: 800
+                        });
+                        setTimeout(function () {
+                            loadData('medicines');
+                            $('#create')[0].reset();
+                            $('#form-create').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 800)
+                    } else if (data === "exist") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Medicine name existed!'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Error in server side'
+                        });
+                    }
+                })
+            }
+        })
+    })
+}
+
+// Edit medicine
+function editMedicine() {
+    // Fill exist data to form
+    $(document).on('click', 'a.edit', function (e) {
+        $.post($(this).attr('href'), function (data) {
+            $('#edit input#medicineID').attr('value', data.medicineID);
+            $('#edit input#nameLabel').attr('value', data.medicineName);
+            $('#edit input#brandLabel').attr('value', data.brand);
+            $('#edit input#descriptionLabel').attr('value', data.description);
+        })
+    });
+
+    // Validate data
+    $('#edit').validate({
+        rules : {
+            medicineName: {letterswithbasicpunc:true},
+            brand: {lettersonly: true},
+            description: {letterswithbasicpunc:true}
+        }
+    });
+    $('#edit input').on('keyup blur', function () {
+        if ($('#edit').valid()) {
+            $('#edit > button').prop('disabled', false);
+        } else {
+            $('#edit > button').prop('disabled', true);
+        }
+    });
+
+    // Send data to server
+    $('#edit').submit(function (e) {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirmation',
+            text: 'Are you sure to edit this medicine?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.post('../../manageMedicine?type=edit', $('#edit').serialize(), function (data) {
+                    if (data === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Edit medicine successfully!',
+                            timer: 800
+                        });
+                        setTimeout(function () {
+                            loadData('medicines');
+                            $('#edit')[0].reset();
+                            $('#form-edit').modal('hide');
+                            $('.modal-backdrop').remove();
+                        }, 800)
+                    } else if (data === "exist") {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Medicine name existed!'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Error in server side'
+                        });
+                    }
+                })
+            }
+        })
+    })
+}
+
 // Reset form after hidden
 function resetForm() {
     $(".modal").on("shown.bs.modal", function () {
-        if ($(".modal-backdrop").length > 1) {
+        if ($(".modal-backdrop").length >= 1) {
             $(".modal-backdrop").not(':first').remove();
         }
     })
@@ -674,4 +903,12 @@ function manageBlog() {
 
 function manageService() {
     createService();
+    resetForm();
+    editService();
+}
+
+function manageMedicine() {
+    createMedicine();
+    resetForm();
+    editMedicine();
 }

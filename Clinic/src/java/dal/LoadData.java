@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.*;
 
@@ -83,6 +84,31 @@ public class LoadData extends HttpServlet {
                     response.getWriter().close();
                 }
                 break;
+                case "medicines": {
+                    MedicineDAO medicineDAO = new MedicineDAO();
+                    List<Medicine> medicines = medicineDAO.getMedicines();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write(new Gson().toJson(medicines));
+                }
+                break;
+                case "appointments": {
+                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                    HttpSession session = request.getSession();
+                    Account currentAccount = (Account) session.getAttribute("currentAccount");
+                    if (currentAccount.getAccountRole() == 2) {
+                        List<Appointment> appointments = appointmentDAO.getAppointmentsForPat(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(appointments));
+                    } else if (currentAccount.getAccountRole() == 1) {
+                        List<Appointment> appointments = appointmentDAO.getAppointmentsForDoc(currentAccount.getAccountID());
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("utf-8");
+                        response.getWriter().write(new Gson().toJson(appointments));
+                    }
+                }
+                break;
                 default:
                     break;
             }
@@ -112,6 +138,38 @@ public class LoadData extends HttpServlet {
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(blogJson);
             response.getWriter().close();
+        }
+
+        String serviceID = request.getParameter("serviceID");
+        if (serviceID != null) {
+            ServiceDAO serviceDAO = new ServiceDAO();
+            Service service = serviceDAO.getService(Integer.parseInt(serviceID));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(new Gson().toJson(service));
+            response.getWriter().close();
+        }
+
+        String medicineID = request.getParameter("medicineID");
+        if (medicineID != null) {
+            MedicineDAO medicineDAO = new MedicineDAO();
+            Medicine medicine = medicineDAO.getMedicine(Integer.parseInt(medicineID));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(new Gson().toJson(medicine));
+            response.getWriter().close();
+        }
+
+        String appointmentID = request.getParameter("appointmentID");
+        if (appointmentID != null) {
+            AppointmentDAO appointmentDAO = new AppointmentDAO();
+            Appointment appointment = appointmentDAO.getAppointment(Integer.parseInt(appointmentID));
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.setDateFormat("yyyy-MM-dd");
+            String appointmentJson = gsonBuilder.create().toJson(appointment);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(appointmentJson);
         }
     }
 

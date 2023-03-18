@@ -70,13 +70,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="nameLabel" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="nameLabel" name="name">
-                        <p class="nS text-danger"></p>
+                        <input type="text" class="form-control" id="nameLabel" name="serviceName" required>
                     </div>
                     <div class="mb-3">
                         <label for="priceLabel" class="form-label">Price</label>
                         <input type="number" class="form-control" id="priceLabel" name="price" min="1000" max="10000">
-                        <p class="pS text-danger"></p>
                     </div>
                     <div>
                         <label for="status" class="me-3">Status:</label>

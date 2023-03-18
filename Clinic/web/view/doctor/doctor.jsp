@@ -5,12 +5,13 @@
     <!DOCTYPE html>
     <html lang="en">
         <head>
-            <title>Admin page</title>
+            <title>Doctor page</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <!-- Panel CSS -->
         <link rel="stylesheet" href="../../assets/css/panel.css">
     </head>
@@ -29,46 +30,25 @@
 
             <ul class="nav-lists">
                 <li>
-                    <a href="#dashboard">
-                        <i class="fa-solid fa-grip"></i>
-                        <span class="link-name">Dashboard</span>
+                    <a href="#appointment">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span class="link-name">Appointment</span>
                     </a>
-                    <span class="tool-tip">Dashboard</span>
+                    <span class="tool-tip">Appointment</span>
                 </li>
                 <li>
-                    <a href="#manage-doctor">
-                        <i class="fa-solid fa-stethoscope"></i>
-                        <span class="link-name">Manage Doctors</span>
+                    <a href="#examination">
+                        <i class="fa-solid fa-flask-vial"></i>
+                        <span class="link-name">Examination</span>
                     </a>
-                    <span class="tool-tip">Manage Doctors</span>
+                    <span class="tool-tip">Examination</span>
                 </li>
                 <li>
-                    <a href="#manage-patient">
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <span class="link-name">Manage Patients</span>
+                    <a href="#prescription">
+                        <i class="fa-solid fa-prescription"></i>
+                        <span class="link-name">Prescription</span>
                     </a>
-                    <span class="tool-tip">Manage Patients</span>
-                </li>
-                <li>
-                    <a href="#manage-blog">
-                        <i class="fa-solid fa-newspaper"></i>
-                        <span class="link-name">Manage Blogs</span>
-                    </a>
-                    <span class="tool-tip">Manage Blogs</span>
-                </li>
-                <li>
-                    <a href="#manage-service">
-                        <i class="fa-solid fa-hand-holding-medical"></i>
-                        <span class="link-name">Manage Services</span>
-                    </a>
-                    <span class="tool-tip">Manage Services</span>
-                </li>
-                <li>
-                    <a href="#manage-medicine">
-                        <i class="fa-solid fa-capsules"></i>
-                        <span class="link-name">Manage Medicines</span>
-                    </a>
-                    <span class="tool-tip">Manage Medicines</span>
+                    <span class="tool-tip">Prescription</span>
                 </li>
                 <li>
                     <a href="#profile">
@@ -115,15 +95,17 @@
         <!-- JQuery Validation plugin -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- JQuery UI -->
+        <script src="
+https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js
+"></script>
         <!-- Sweet Alert 2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <!-- Admin JS -->
-        <script src="../../assets/js/admin.js"></script>
+        <!-- Doctor JS -->
+        <script src="../../assets/js/doctor.js"></script>
 
         <div class="main-content">
-            <!-- Start Dashboard Section -->
-            <%@include file="dashboard.jsp" %>
-            <!-- End Dashboard Section -->
+            <%@include file="appointment.jsp" %>
         </div>
     </body>
 </html>

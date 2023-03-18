@@ -70,13 +70,5 @@
                     loadData("doctors");
                     loadData("patients");
                     loadData("blogs");
-                    // loadData("categories");
-                    // loadData("services");
-                    // loadData("medicines");
-                    // manageDoctor();
-                    // managePatient();
-                    // manageBlog();
-                    // manageService();
-                    // manageMedicine();
                 })
 </script>
