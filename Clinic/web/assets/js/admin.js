@@ -159,7 +159,7 @@ function loadData(type) {
                     $.each(data, function (i, val) {
                         const row = $('<tr>').append($('<th scope="row">').text(i + 1))
                                 .append($('<td>').text(val.serviceName))
-                                .append($('<td>').text(val.price))
+                                .append($('<td>').text('$' + val.price))
                                 .append($('<td>').html((val.status == 1 ? 'Available<i class="fa-solid fa-circle-check text-success ms-2"></i>' : 'Disabled<i class="fa-solid fa-ban text-danger ms-2"></i>')))
                                 .append($('<td class="action">'));
     

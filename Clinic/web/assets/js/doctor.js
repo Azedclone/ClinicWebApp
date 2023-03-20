@@ -77,7 +77,9 @@ function loadData(type) {
                 $('#services').empty();
                 $.post('../../loadData?type=services', function (data) {
                     $.each(data, function (i, val) {
-                        $('#services').append($($('<label class="me-3"><input type="checkbox" name="service" value="' + val.serviceID + '" class="form-check-input me-2">' + val.serviceName + '</label>')));
+                        if (val.status == 1) {
+                            $('#services').append($($('<label class="me-3"><input type="checkbox" name="service" value="' + val.serviceID + '" class="form-check-input me-2">' + val.serviceName + '</label>')));
+                        }
                     })
                 })
             }
@@ -106,7 +108,8 @@ function loadData(type) {
                 })
             }
             break;
-            case 'medicines' : {
+        case 'medicines' :
+            {
                 $('#medicines').empty();
                 $.post('../../loadData?type=medicines', function (data) {
                     $.each(data, function (i, val) {
@@ -115,7 +118,7 @@ function loadData(type) {
                 })
             }
             break;
-            case 'prescriptions':
+        case 'prescriptions':
             {
                 var aView = $('<a class="view" data-bs-toggle="modal" data-bs-target="#form-view" href=""><i class="fa-solid fa-eye text-primary me-3"></i></a>');
 
@@ -162,31 +165,38 @@ function createExamination() {
     $('#create').submit(function (e) {
         e.preventDefault();
 
-        Swal.fire({
-            icon: 'question',
-            title: 'Confirmation',
-            text: 'Are you sure to create this examination?',
-            showCancelButton: true,
-            confirmButtonText: 'Yes'
-        }).then(result => {
-            if (result.isConfirmed) {
-                $.post('../../manageExamination?type=create', $('#create').serialize(), function (data) {
-                    if (data === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            text: 'Create examination successfully!',
-                            timer: 800
-                        });
-                        setTimeout(function () {
-                            loadData("examinations");
-                            $('#create')[0].reset();
-                            $('#form-create').modal('hide');
-                            $('.modal-backdrop').remove();
-                        }, 800);
-                    }
-                })
-            }
-        })
+        if (!$('input[name=service]').is(':checked')) {
+            Swal.fire({
+                icon: 'error',
+                text: 'Not select any service!'
+            });
+        } else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirmation',
+                text: 'Are you sure to create this examination?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.post('../../manageExamination?type=create', $('#create').serialize(), function (data) {
+                        if (data === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'Create examination successfully!',
+                                timer: 800
+                            });
+                            setTimeout(function () {
+                                loadData("examinations");
+                                $('#create')[0].reset();
+                                $('#form-create').modal('hide');
+                                $('.modal-backdrop').remove();
+                            }, 800);
+                        }
+                    })
+                }
+            })
+        }
     })
 }
 
@@ -221,7 +231,7 @@ function editExamination() {
         // Send data to server
         $('#edit').submit(function (e) {
             e.preventDefault();
-    
+
             Swal.fire({
                 icon: 'question',
                 title: 'Confirmation',
@@ -230,8 +240,8 @@ function editExamination() {
                 confirmButtonText: 'Yes'
             }).then(result => {
                 if (result.isConfirmed) {
-                    $.post('../../manageExamination?type=edit', $('#edit').serialize(), function(data){
-                        if (data === 'success'){
+                    $.post('../../manageExamination?type=edit', $('#edit').serialize(), function (data) {
+                        if (data === 'success') {
                             Swal.fire({
                                 icon: 'success',
                                 text: 'Update examination successfully!',
@@ -263,41 +273,49 @@ function createPrescription() {
     $('#create').submit(function (e) {
         e.preventDefault();
 
-        Swal.fire({
-            icon: 'question',
-            title: 'Confirmation',
-            text: 'Are you sure to create this prescription?',
-            showCancelButton: true,
-            confirmButtonText: 'Yes'
-        }).then(result => {
-            if (result.isConfirmed) {
-                $.post('../../managePrescription?type=create', $('#create').serialize(), function (data) {
-                    if (data === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            text: 'Create prescription successfully!',
-                            timer: 800
-                        });
-                        setTimeout(function () {
-                            loadData("prescriptions");
-                            $('#create')[0].reset();
-                            $('#form-create').modal('hide');
-                            $('.modal-backdrop').remove();
-                        }, 800);
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            text: 'Error in server side!'
-                        });
-                    }
-                })
-            }
-        })
+        if (!$('input[name=medicine]').is(':checked')) {
+            Swal.fire({
+                icon: 'error',
+                text: 'Not select any medicine!'
+            });
+        } else {
+
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirmation',
+                text: 'Are you sure to create this prescription?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.post('../../managePrescription?type=create', $('#create').serialize(), function (data) {
+                        if (data === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'Create prescription successfully!',
+                                timer: 800
+                            });
+                            setTimeout(function () {
+                                loadData("prescriptions");
+                                $('#create')[0].reset();
+                                $('#form-create').modal('hide');
+                                $('.modal-backdrop').remove();
+                            }, 800);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Error in server side!'
+                            });
+                        }
+                    })
+                }
+            })
+        }
     })
 }
 
 // View prescripiton
-function viewPrescription(){
+function viewPrescription() {
     // Load data to form view
     $(document).on('click', 'a.view', function (e) {
         e.preventDefault();
@@ -305,8 +323,10 @@ function viewPrescription(){
         $.post($(this).attr('href'), function (data) {
             $('#view textarea#instructionLabel').val(data.instruction);
         });
+    }
+    )
 }
-)};
+;
 
 // Reset form after hidden
 function resetForm() {

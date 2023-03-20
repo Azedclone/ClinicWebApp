@@ -90,6 +90,7 @@ public class LoadData extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(new Gson().toJson(medicines));
+                    response.getWriter().close();
                 }
                 break;
                 case "appointments": {
@@ -107,6 +108,7 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(appointments));
                     }
+                    response.getWriter().close();
                 }
                 break;
                 case "examinations": {
@@ -124,6 +126,7 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(examinations));
                     }
+                    response.getWriter().close();
                 }
                 break;
                 case "prescriptions": {
@@ -141,6 +144,7 @@ public class LoadData extends HttpServlet {
                         response.setCharacterEncoding("utf-8");
                         response.getWriter().write(new Gson().toJson(prescriptions));
                     }
+                    response.getWriter().close();
                 }
                 break;
                 default:
